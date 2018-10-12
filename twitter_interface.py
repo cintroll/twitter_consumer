@@ -12,4 +12,4 @@ class twitter_interface:
         , access_token_secret=self.access_token_secret)
 
     def search_hashtag(self, hashtag):
-        return self.twitter_api.GetSearch(raw_query='q="%%23%s"&include_entities=true' % hashtag, return_json=True)
+        return self.twitter_api.GetSearch(raw_query='q="%%23%s"&include_entities=true&count=100' % hashtag, return_json=True)
