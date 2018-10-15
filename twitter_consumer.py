@@ -30,7 +30,7 @@ def query_tags(twitter_api : twitter_interface):
                 users[user_id]['name'] = tweet['user']['screen_name']
                 users[user_id]['followers'] = tweet['user']['followers_count']
                 users[user_id]['lang'] = tweet['user']['lang']
-                tweet_entry['user'] = users[user_id]
+                tweet_entry['user_id'] = user_id
                 # save tweet
                 tweets.append(tweet_entry)
     
@@ -74,13 +74,13 @@ def tweets_hour_of_day(tweets : list):
     return statistic
 
 # group and count tweets by lang and hashtag
-def tweets_lang_tag(tweets : list):
+def tweets_lang_tag(tweets : list, users : dict):
     statistic = []
 
     hashtag_group = {}
     for tweet in tweets:
         hashtag = tweet['hashtag']
-        lang = tweet['user']['lang']
+        lang = users[tweet['user_id']]['lang']
         hashtag_group.setdefault(hashtag, {})
         hashtag_group[hashtag].setdefault(lang, 0)
         hashtag_group[hashtag][lang] += 1
@@ -114,5 +114,5 @@ if __name__ == "__main__":
         # generate statistics and save
         data_base.write_statistic(statistics_type.FIVE_MOST, five_most_followed(users))
         data_base.write_statistic(statistics_type.HOUR_DAY_GROUP, tweets_hour_of_day(tweets))
-        data_base.write_statistic(statistics_type.HASHTAG_LANG_GROUP, tweets_lang_tag(tweets))
+        data_base.write_statistic(statistics_type.HASHTAG_LANG_GROUP, tweets_lang_tag(tweets, users))
 
