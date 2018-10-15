@@ -102,7 +102,7 @@ def tweets_lang_tag(tweets : list, users : dict):
 if __name__ == "__main__":
     data_base = dynamodb_table('tweets')
     with open("twitter_keys.json", 'r') as twt_keys:
-        keys = json.load(twt_keys)\
+        keys = json.load(twt_keys)
         # load twitter api
         twitter_api = twitter_interface(**keys)
         # query tweet from twitter api
