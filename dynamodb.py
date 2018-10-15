@@ -53,13 +53,13 @@ statistics_table_schema = {
     'TableName':'statistics',
     'KeySchema': [
         {
-            'AttributeName':'type',
+            'AttributeName':'id',
             'KeyType':'HASH'
         }
     ],
     'AttributeDefinitions':[
         {
-            'AttributeName': 'type',
+            'AttributeName': 'id',
             'AttributeType': 'N'
         }
     ],
@@ -117,7 +117,7 @@ class dynamodb_table:
 
     def write_statistic(self, type, statistic) :
         statistic = {
-            'type' : type,
+            'id' : type,
             'data' : statistic
         }
         # write statistic
@@ -164,10 +164,10 @@ class dynamodb_table:
 
     def clean_statistics_table(self):
         # list all users
-        scan = self._table_statistics.scan(FilterExpression=Attr('type').gt(0))
+        scan = self._table_statistics.scan(FilterExpression=Attr('id').gt(0))
         # delete each users
         with self._table_statistics.batch_writer() as batch:
             for each in scan['Items']:
                 batch.delete_item(Key={
-                    'type':each['type']
+                    'id':each['id']
                 })
